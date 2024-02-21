@@ -7,11 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    //getOne
+    //Optional handles possibility of not being able to find a particular user due to no match
+    public Optional<User> findOneUser(String id){
+        return userRepository.findById(id);
+    }
 
     //getAll
     public List<User> allUsers(){
@@ -19,6 +26,13 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    //patch route
+    //need to discuss
+
+    //deleteOne
+    public void deleteOneUser(String id) {
+        userRepository.deleteById(id);
+    }
 
     //login
     public User login(String username, String password) {
