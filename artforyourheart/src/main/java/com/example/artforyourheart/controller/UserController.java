@@ -7,16 +7,13 @@ import com.example.artforyourheart.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -24,6 +21,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    //get one
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOneUser(@PathVariable String id){
+        return userService.findOneUser(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
     //get all
     @GetMapping
@@ -31,7 +35,11 @@ public class UserController {
         return new ResponseEntity<List<User>>(userService.allUsers(), HttpStatus.OK);
     }
 
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUserById(@PathVariable String id) {
+        userService.deleteOneUser(id);
+        return ResponseEntity.ok().build();
+    }
 
     // Login
     @PostMapping("/login")
