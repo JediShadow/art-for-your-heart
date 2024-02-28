@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests(authz -> authz
                         // apply the lambda-based configuration
-                        .requestMatchers("/", "/home", "/public/**", "/login", "/main", "/users", "/users/login", "/likes", "/likes/matches").permitAll()
+                        .requestMatchers("/", "/home", "/public/**", "/login","/users/main", "/main","/users**", "/users", "/users/login", "/likes", "/likes/matches").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
