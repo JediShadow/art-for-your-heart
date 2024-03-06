@@ -92,20 +92,15 @@ public class UserController {
 
         // Creating user WITHOUT photo URLS first (because we won't have ID until after user is created, and we need the ID for the photo upload)
         User user = userService.createUser(username, password, name, age, height, location, gender, bio, null, null, interests, matches, yes, no, roles);
-        logger.info("Initial user", user);
         // Get the ID from the user after they're created
         String userId = user.getId().toString();
-        logger.info("String userId", user);
         ObjectId userObjectId = new ObjectId(userId);
         // Uploading the photos to Cloudinary
         String realPhotoUrl = cloudinaryService.uploadRealPhoto(realPhoto, userId);
-        logger.info("realPhoto URL", user);
         List<String> artPhotoUrls = cloudinaryService.uploadArtPhotos(artPhotos, userId);
-        logger.info("artPhotos URL", user);
         // Update user with the photo URLs saved to be used and rendered later
         user.setRealPhoto(realPhotoUrl);
         user.setArtPhotos(artPhotoUrls);
-        logger.info("Updated user", user);
         User updatedUser = userService.updateUser(user.getId(), user);
         return new ResponseEntity<>(updatedUser, HttpStatus.CREATED);
     }

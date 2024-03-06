@@ -52,4 +52,11 @@ public class User {
         this.no = no;
         this.roles = roles;
     }
+
+    // Helper method to add matches
+    public void addMatch(String userId) {
+        if (!this.matches.contains(userId)) {
+            this.matches.add(userId);
+        }
+    }
 }
