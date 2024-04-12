@@ -11,8 +11,12 @@ import java.util.List;
 
 //@Data is lombok import that handles getters & setters so that we don't have to list them explicitly
 @Data
+//Creates a Constructor of the Model with default values (for flexbility)
 @NoArgsConstructor
+//Indicates this will be stored as a Document in MongoDB collection
 @Document(collection = "user")
+
+//This Model represents a User who signs up w/ characteristics 
 public class User {
     @Id
     private ObjectId id;
@@ -33,6 +37,7 @@ public class User {
     List<String> no = new ArrayList<>();
     private List<String> roles = new ArrayList<>();
 
+    //Constructor created instead of using noargs annotion due to change to the user id & stringId
     public User(String username, String password, String name, Integer age, String height, String location, String gender, String bio, String realPhoto, List<String> artPhotos, List<String> interests, List<String> matches, List<String> yes, List<String> no, List<String> roles) {
         this.id = ObjectId.get();
         this.stringId = id.toHexString();
