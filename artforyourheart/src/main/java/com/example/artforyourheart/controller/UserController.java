@@ -1,40 +1,45 @@
 package com.example.artforyourheart.controller;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.example.artforyourheart.cloudinary.CloudinaryService;
-import com.example.artforyourheart.model.User;
-import com.example.artforyourheart.repository.UserRepository;
-import com.example.artforyourheart.service.LikesService;
-import com.example.artforyourheart.service.UserService;
-import com.example.artforyourheart.service.MatchingService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import com.example.artforyourheart.cloudinary.CloudinaryService;
+import com.example.artforyourheart.model.User;
+import com.example.artforyourheart.service.MatchingService;
+import com.example.artforyourheart.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
+// Define REST controller and route endpoint
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
+    // Dependency injection
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private LikesService likesService;
 
     @Autowired
     private MatchingService matchingService;
@@ -58,13 +63,15 @@ public class UserController {
         return new ResponseEntity<List<User>>(userService.allUsers(), HttpStatus.OK);
     }
 
+    // Delete user by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUserById(@PathVariable String id) {
         userService.deleteOneUser(id);
         return ResponseEntity.ok().build();
     }
 
-    // Updated an existing user (please note that the server is expecting every field to not be null)
+    // Updated an existing user (please note that the server is expecting every
+    // field to not be null)
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable ObjectId id, @RequestBody User updatedUser) {
         User user = userService.updateUser(id, updatedUser);
@@ -90,8 +97,10 @@ public class UserController {
             @RequestParam(value = "no", required = false) List<String> no,
             @RequestParam("roles") List<String> roles) throws IOException {
 
-        // Creating user WITHOUT photo URLS first (because we won't have ID until after user is created, and we need the ID for the photo upload)
-        User user = userService.createUser(username, password, name, age, height, location, gender, bio, null, null, interests, matches, yes, no, roles);
+        // Creating user WITHOUT photo URLS first (because we won't have ID until after
+        // user is created, and we need the ID for the photo upload)
+        User user = userService.createUser(username, password, name, age, height, location, gender, bio, null, null,
+                interests, matches, yes, no, roles);
         logger.info("Initial user", user);
         // Get the ID from the user after they're created
         String userId = user.getId().toString();
@@ -125,13 +134,16 @@ public class UserController {
         return ResponseEntity.ok(swipeableUsers);
     }
 
-    // Checks if user is authenticated; redundant now that we know it is implemented correctly (user is only authenticated if they successfully are logged in)
+    // Checks if user is authenticated; redundant now that we know it is implemented
+    // correctly (user is only authenticated if they successfully log in)
     @GetMapping("/api/auth/check")
     public ResponseEntity<?> checkAuthentication(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        boolean isAuthenticated = authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
+        // Boolean for if a user is authenticated
+        boolean isAuthenticated = authentication != null && !(authentication instanceof AnonymousAuthenticationToken)
+                && authentication.isAuthenticated();
 
         return ResponseEntity.ok(isAuthenticated);
     }
