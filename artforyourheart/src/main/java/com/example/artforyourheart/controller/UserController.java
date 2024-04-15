@@ -30,7 +30,6 @@ import com.example.artforyourheart.service.MatchingService;
 import com.example.artforyourheart.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 // Define REST controller and route endpoint
 @RestController
@@ -138,7 +137,7 @@ public class UserController {
     // correctly (user is only authenticated if they successfully log in)
     @GetMapping("/api/auth/check")
     public ResponseEntity<?> checkAuthentication(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+        // HttpSession session = request.getSession(false);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         // Boolean for if a user is authenticated
