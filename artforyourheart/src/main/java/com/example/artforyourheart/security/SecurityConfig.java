@@ -47,6 +47,7 @@ public class SecurityConfig {
 
     // Defines security rules for different HTTP requests and paths by chaining
     // methods
+    @SuppressWarnings("deprecation")
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
