@@ -74,17 +74,17 @@ public class SecurityConfig {
 
     // CORS configuration to allow backend (8080) to receive requests from the
     // frontend (3000)
-    @Bean
-    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true); // necessary if we implement cookies, authorization headers with HTTPS
-        config.addAllowedOrigin("http://localhost:3000"); // replace with frontend url if necessary
-        config.addAllowedHeader("*"); // allow all headers
-        config.addAllowedMethod("*"); // allow all methods
-        source.registerCorsConfiguration("/**", config); // apply these settings to all routes
-        return source;
-    }
+    // @Bean
+    // public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+    //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    //     CorsConfiguration config = new CorsConfiguration();
+    //     config.setAllowCredentials(true); // necessary if we implement cookies, authorization headers with HTTPS
+    //     config.addAllowedOrigin("http://localhost:3000"); // replace with frontend url if necessary
+    //     config.addAllowedHeader("*"); // allow all headers
+    //     config.addAllowedMethod("*"); // allow all methods
+    //     source.registerCorsConfiguration("/**", config); // apply these settings to all routes
+    //     return source;
+    // }
 
     // Handles successful authentication
     // Prepares response to send user data (minus password) in JSON format after
