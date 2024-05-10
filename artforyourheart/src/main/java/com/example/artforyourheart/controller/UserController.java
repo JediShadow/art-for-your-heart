@@ -72,7 +72,7 @@ public class UserController {
     // Updated an existing user (please note that the server is expecting every
     // field to not be null)
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable ObjectId id, @RequestBody User updatedUser) {
+    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User updatedUser) {
         User user = userService.updateUser(id, updatedUser);
         return ResponseEntity.ok(user);
     }
@@ -114,7 +114,7 @@ public class UserController {
         user.setRealPhoto(realPhotoUrl);
         user.setArtPhotos(artPhotoUrls);
         logger.info("Updated user", user);
-        User updatedUser = userService.updateUser(user.getId(), user);
+        User updatedUser = userService.updatedUser(user.getId(), user);
         return new ResponseEntity<>(updatedUser, HttpStatus.CREATED);
     }
 

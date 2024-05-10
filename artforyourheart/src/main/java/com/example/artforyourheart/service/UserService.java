@@ -32,12 +32,40 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    //put method to update a user
-    public User updateUser(ObjectId id, User updatedUser) {
+
+  
+    public User updatedUser(ObjectId id, User updatedUser) {
         // set user ID to make sure it matches the existing user you want to update
         updatedUser.setId(id);
         // save updated user, overwriting the existing user with the same ID
         return userRepository.save(updatedUser);
+    }
+
+
+    //put method to update a user
+    public User updateUser(String id, User updatedUser) {
+        // Retrieve the existing user from the database
+       User existingUser = userRepository.findByUsername(updatedUser.getUsername());
+       String password = existingUser.getPassword();
+         String realPhotoUrl = existingUser.getRealPhoto(); 
+         List<String> artPhotoUrls = existingUser.getArtPhotos();
+
+
+        // Update the fields of the existing user with the provided updated user
+        existingUser.setName(updatedUser.getName());
+        existingUser.setUsername(updatedUser.getUsername());
+        existingUser.setAge(updatedUser.getAge());
+        existingUser.setHeight(updatedUser.getHeight());
+        existingUser.setLocation(updatedUser.getLocation());
+        existingUser.setGender(updatedUser.getGender());
+        existingUser.setBio(updatedUser.getBio());
+        existingUser.setInterests(updatedUser.getInterests());
+        existingUser.setRoles(updatedUser.getRoles());
+        existingUser.setPassword(password);
+        existingUser.setRealPhoto(realPhotoUrl);
+        existingUser.setArtPhotos(artPhotoUrls);
+        // Save the updated user
+        return userRepository.save(existingUser);
     }
 
     //deleteOne method to delete a user by ID
